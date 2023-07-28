@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="root"></div>
+    <script type = "module">
+        import { reactive } from './reactive.js';
+        import { effect }  from './effect.js';
+        const obj = reactive({
+            name: "jack",
+            age: 18,
+            foo:{
+                bar:{
+                    sss:123
+                }
+            }
+        })
+
+        effect(() => {
+            document.querySelector("#root").innerText = `${obj.name} - ${obj.age}-${obj.foo.bar.sss}`
+        })
+
+        setTimeout(()=>{
+            obj.name = 'bob'
+            setTimeout(()=>{
+                obj.age = '23'
+                setTimeout(()=>{
+                    obj.foo.bar.sss = 66666666
+                },1000)
+            },1000)
+        },2000)
+
+    </script>
+</body>
+
+</html>

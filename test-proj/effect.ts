@@ -1,10 +1,17 @@
 let activeEffect: any
-export const effect = (fn: Function) => {
+interface options {
+    scheduler?: Function
+}
+export const effect = (fn: Function, options?: options) => {
+    let res
     const _effect = () => {
         activeEffect = _effect
-        fn()
+        res = fn()
+        return res
     }
+    _effect.options = options
     _effect()
+    return _effect
 }
 
 let targetMap = new WeakMap()
@@ -12,12 +19,12 @@ export const track = (target: any, key: any) => {
     let depsMap = targetMap.get(target)
     if (!depsMap) {
         depsMap = new Map()
-        targetMap.set(target,depsMap)
+        targetMap.set(target, depsMap)
     }
     let deps = depsMap.get(key)
     if (!deps) {
         deps = new Set()
-        depsMap.set(key,deps)
+        depsMap.set(key, deps)
     }
     deps.add(activeEffect)
 }
@@ -25,5 +32,11 @@ export const track = (target: any, key: any) => {
 export const trigger = (target: any, key: any) => {
     let depsMap = targetMap.get(target)
     let deps = depsMap.get(key)
-    deps.forEach((effect:Function) => effect())
+    deps.forEach((effect: any) => {
+        if (effect?.options?.scheduler) {
+            effect.options.scheduler?.()
+        } else {
+            effect()
+        }
+    })
 }

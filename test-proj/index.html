@@ -11,30 +11,12 @@
     <div id="root"></div>
     <script type = "module">
         import { reactive } from './reactive.js';
-        import { effect }  from './effect.js';
-        const obj = reactive({
-            name: "jack",
-            age: 18,
-            foo:{
-                bar:{
-                    sss:123
-                }
-            }
+        import { computed } from './computed.js';
+        window.a = reactive({name:'jack',age:18})
+        window.b = computed(() => {
+            console.log("重新计算了");
+            return a.age + 10 
         })
-
-        effect(() => {
-            document.querySelector("#root").innerText = `${obj.name} - ${obj.age}-${obj.foo.bar.sss}`
-        })
-
-        setTimeout(()=>{
-            obj.name = 'bob'
-            setTimeout(()=>{
-                obj.age = '23'
-                setTimeout(()=>{
-                    obj.foo.bar.sss = 66666666
-                },1000)
-            },1000)
-        },2000)
 
     </script>
 </body>
