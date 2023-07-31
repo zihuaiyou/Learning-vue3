@@ -1,0 +1,34 @@
+// 实现bem架构
+$block-sel: "-" !default;
+$elemnt-sel: "__" !default;
+$modify-sel: "--" !default;
+$namespace: "zihyou" !default;
+
+@mixin b($block) {
+  $B: $namespace + $block-sel + $block;
+  .#{$B} {
+    @content;
+  }
+}
+
+@mixin e($element) {
+  $parent: &;
+  // 防止父类名重复
+  @at-root {
+    $E: $parent + $elemnt-sel + $element;
+    #{$E} {
+      @content;
+    }
+  }
+}
+
+@mixin m($modify) {
+  $parent: &;
+  // 防止父类名重复
+  @at-root {
+    $M: $parent + $modify-sel + $modify;
+    #{$M} {
+      @content;
+    }
+  }
+}
