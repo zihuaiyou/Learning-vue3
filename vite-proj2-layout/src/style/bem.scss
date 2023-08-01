@@ -32,3 +32,12 @@ $namespace: "zihyou" !default;
     }
   }
 }
+
+@mixin bfc {
+  height: 100%;
+  overflow: hidden;
+}
+
+@mixin flex {
+  display: flex;
+}
